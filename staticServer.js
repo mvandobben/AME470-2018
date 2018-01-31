@@ -16,7 +16,7 @@ app.get("/add", function (req, res) {
     var a = parseFloat(req.query.a);
     var b = parseFloat(req.query.b);
     var result = a + b
-    res.send(result.toString)
+    res.send(result.toString())
 
 });
 
@@ -25,7 +25,7 @@ app.get("/subtract", function (req, res) {
     var a = parseFloat(req.query.a);
     var b = parseFloat(req.query.b);
     var result = a - b
-    res.send(result.toString)
+    res.send(result.toString())
 });
 
 app.get("/multiply", function (req, res) {
@@ -33,7 +33,7 @@ app.get("/multiply", function (req, res) {
     var a = parseFloat(req.query.a);
     var b = parseFloat(req.query.b);
     var result = a * b
-    res.send(result.toString)
+    res.send(result.toString())
 });
 
 app.get("/divide", function (req, res) {
@@ -41,7 +41,7 @@ app.get("/divide", function (req, res) {
     var a = parseFloat(req.query.a);
     var b = parseFloat(req.query.b);
     var result = a / b
-    res.send(result.toString)
+    res.send(result.toString())
 });
 
 app.use(methodOverride());
