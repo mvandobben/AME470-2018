@@ -1,28 +1,30 @@
 <html>
+Maureen van Dobben's Valentine's Calculator - February 14, 2018
 <head>
+  <title>Valentine's Day Fun</title>
+  <style>
+  body {
+    background-color: #FB8E7A
+  }
+  </style>
   <script src='asyncReq.js'></script>
   <script src='jquery-3.3.1.min.js'></script>
   <script>
-function getDataFromServer(){
-    //var URL = r
-    loadFile(URL, resData){
-      $(“#result”).val(resData)
-  }
-}
-
 function sendToServer(){
-//inputData
-  var inputData= document.getElementById("eq").value;
-  var URL = "./eval" + inputData
-  document.getElementById('result').innerHTML = parseInt(inputData);
-//  var resData =
-//test
-
+    //grabbing the url from our text box, and encoding it to solve the equation
+    var url = "./eval?eq=" + encodeURIComponent($("#eq").val());
+    //loading the file with our new url and data.
+	// Full disclosure: Ryan Cadby helped me figure this bit out.
+    loadFile(url,function(resData){
+        $("#result").html(resData);
+    }
+  );
+  //test
 }
   </script>
-
 </head>
 
+//basic html for the page
 <body>
 	<h1> Eval </h1>
   <textarea id='eq'></textarea>
