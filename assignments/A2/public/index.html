@@ -1,0 +1,32 @@
+<html>
+<head>
+  <script src='asyncReq.js'></script>
+  <script src='jquery-3.3.1.min.js'></script>
+  <script>
+function getDataFromServer(){
+    //var URL = r
+    loadFile(URL, resData){
+      $(“#result”).val(resData)
+  }
+}
+
+function sendToServer(){
+//inputData
+  var inputData= document.getElementById("eq").value;
+  var URL = "./eval" + inputData
+  document.getElementById('result').innerHTML = parseInt(inputData);
+//  var resData =
+//test
+
+}
+  </script>
+
+</head>
+
+<body>
+	<h1> Eval </h1>
+  <textarea id='eq'></textarea>
+  <button onclick='sendToServer()'> Evaluate </button>
+  <div id='result'> </div>
+</body>
+</html>
