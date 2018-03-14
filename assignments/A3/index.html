@@ -3,16 +3,16 @@
   <script src='asyncReq.js'></script>
   <script src='jquery-3.3.1.min.js'></script>
   <style>
-  #body{
-     font-color: #FF000;
-     background: #FAFBFB
+  #body {
+     color: #FF000;
+     background: #FAFBFB;
   }
-  #h1{
+  #h1 {
      font-size: 36px;
      align-items: center;
-     font-color: #5D6077;
+     color: #5D6077;
   }
-    #rssBox{
+  #rssBox {
       float:left;
       width: 250px;
       min-height: 100%;
@@ -22,7 +22,7 @@
       align-items: center;
       font-family: "Helvetica", "Arial", sans-serif;
     }
-    #theDetails{
+    #theDetails {
       float:right;
       width: calc(100% - 250px);
       min-height: 100%;
@@ -31,11 +31,23 @@
       align-content: center;
       font-family: "Helvetica", "Arial", sans-serif;
     }
-    #theList{
+    #theList {
        color: #FF000;
        background-color: #EEEEEE;
        align-content: center;
     }
+    .button {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
   </style>
   <script>
   function getDataFromServer(){
@@ -88,7 +100,7 @@
 <body>
 <div id='rssBox'>
 	<h1> RSS Reader </h1>
-  <button onclick='changeRSSSrc()'> Edit </button>
+  <button class="button" onclick='changeRSSSrc()'> Edit </button>
   <div id='theList'></div>
 </div>
 <div id='theDetails'></div>
