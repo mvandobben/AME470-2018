@@ -74,16 +74,17 @@
     height:300px;
     width:300px;
   }
-  /*#theDetails h1{
-    font-size: 14px;
-  }
-  
-  #theDetails h2{
-    font-size: 10px;
-  }*/
   
   </style>
+
   <script>
+    /* fetching the hash inputed into the url*/
+   /* app.get("#", function(url, )){
+      console.log("New RSS feed request arrived")
+      var url = "./getFeedData?url=" + (window.location.has.replace("#", ""));
+      $(document).ready(function(){
+        loadRSS(url);
+    }*/
     
   function getDataFromServer() {
     var url = "https://rss.itunes.apple.com/api/v1/us/apple-music/hot-tracks/all/10/explicit.json";
@@ -133,7 +134,7 @@
     var artistNameDetails = data.artistName || "";
     var artistUrl = data.artistUrl || "";
     var releaseDateDetails = data.releaseDate || "";
-    var genre = data.genres[0].name || "";
+    var genre = data.genres[0] || "";
     var copyright = data.copyright;
   
     markup += "<img src='" + thumb + "'>";
