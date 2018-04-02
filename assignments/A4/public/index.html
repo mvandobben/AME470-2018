@@ -14,7 +14,7 @@
     background:white;
   }
   .item,
-  #theList button{
+  #theImageList button{
       border: 0px;
       padding: 0px;
       min-width: 100%;
@@ -67,9 +67,9 @@
   #theList button:hover{
     background-color: #e7e7e7;
   }
-  #theList button img{
+  #theImageList button img{
       height: 100px;
-      width: 100px;
+      width: auto;
       float: left;
       margin-right: 5px;
   }
@@ -100,8 +100,8 @@
   </style>
   <script>
   function renameClicked(n){
-    var currName = currRSSFeedList[n].name;
-    var id = currRSSFeedList[n].id;
+    var currName = currImageList[n].name;
+    var id = currImageList[n].id;
     var x = prompt("Rename Feed", currName);
     console.log(x);
     if(x){
@@ -114,7 +114,7 @@
   }
 
   function deleteClicked(n){
-    var id = currRSSFeedList[n].id;
+    var id = currImageList[n].id;
     var x = confirm("Delete Image?");
     if(x){
       var url = "./deleteImg?id=" + id;
@@ -132,19 +132,19 @@
     });
   }
 
-  var currRSSData = null;
+/*  var currRSSData = null;
   function changeRSSSrc()
   {
     var feedURL = prompt("Enter your RSS feed URL:");
     var url = "./getFeedData?url=" + feedURL;
     loadImage(url);
   }
-
+*/
   function feedSelected(n)
   {
     var image
     ac.show();
-    var feedURL = currRSSFeedList[n].url;
+    var feedURL = currImageList[n].url;
     var url = "./getFeedData?url=" + feedURL;
     loadImg(url);
     $("#theImageList .item").removeClass("active");
@@ -170,7 +170,7 @@
     loadFile(url, function(resData){
       console.log(resData);
        var allFeeds = JSON.parse(resData);
-       currRSSFeedList = allFeeds;
+       currImageList = allFeeds;
         if(allFeeds.length == 0){
           document.getElementById("theImageList").innerHTML = "No images yet! Add some to start!"
         }
@@ -204,31 +204,36 @@
         var artist = entry.artistName;
         markup += "<button onclick='imgSelected(" + i + ")'><img src='" + thumb + "'><h1>" + name+ "</h1><h2>" + artist + "<h2></button>";
       }
-      $("#theList").html(markup);
+      $("#theImageList").html(markup);
       ac.hide();
     });
   }
   function imgSelected(n)
   {
-    var markup = "";
-    var currName = currRSSFeedList[n].name;
-    var id = currRSSFeedList[n].id;
-    var imgURL = currRSSFeedList[n].url;
-    alert(imgURL);
     $("#theList button").removeClass("active");
     $("#theList button:nth-of-type(" + (n+1) + ")").addClass("active");
+    /*var markup = "";
+    var currName = currImageList[n].name;
+    var id = currImageList[n].id;
+    var imgURL = currImageList[n].url;
+    alert(imgURL);
     var data = currRSSData[n];
-
-    /*var id = n.id;
+    var id = n.id;
     var thumbnail = n.url || "";
     var name = n.name || "";
     var link = n.url || "";*/
-    console.log(data);
 
-    markup += "<img src='" + imgURL + "'>";
-    markup += "<h1>" + currName + "</h1></a>";
+    var data = currImageList[n];
+    console.log(data);
+        var markup = "";
+        var thumbnail = data.url || "";
+        var imageURL = data.name || "";
+  	     var url = "./getImage?url=" + imageURL;
+        console.log(data);
+
+        markup += "<img src='" + thumbnail + "'>";
+
     $("#theDetails").html(markup);
-    //document.getElementById("theDetails").innerHTML = markup;
   }
   </script>
 
