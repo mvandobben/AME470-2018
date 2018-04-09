@@ -1,3 +1,20 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Explore
+ @mvandobb
+Sign out
+1
+1 0 mvandobb/AME470-2018
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+AME470-2018/assignments/A5/public/index.html
+85ac49c  5 days ago
+@mvandobb mvandobb Create index.html
+
+375 lines (350 sloc)  10.3 KB
 <html>
 <head>
   <script src='asyncReq.js'></script>
@@ -103,14 +120,12 @@ body{
   {
     font-size: 15px;
   }
-
   #theList button img{
       height: 100px;
       width: 100px;
       float: left;
       margin-right: 5px;
   }
-
     #allImagesWrapper{
       float:left;
       width: 250px;
@@ -157,7 +172,6 @@ body{
       });
     }
   }
-
   function deleteClicked(n){
     var id = currRSSFeedList[n].id;
     var x = confirm("Delete Image?");
@@ -168,10 +182,6 @@ body{
       });
     }
   }
-
-
-
-
   function getDataFromServer(){
     //var url = "./eval?eq=34-4*45";
     var url = "https://rss.itunes.apple.com/api/v1/us/apple-music/hot-tracks/all/10/explicit.json";
@@ -179,7 +189,6 @@ body{
       $("#result").val(resData);
     });
   }
-
   var currRSSData = null;
   function changeRSSSrc()
   {
@@ -187,7 +196,6 @@ body{
     var url = "./getFeedData?url=" + feedURL;
     loadRSS(url);
   }
-
   function feedSelected(n)
   {
     ac.show();
@@ -197,7 +205,6 @@ body{
     $("#theImageList .item").removeClass("active");
     $("#theImageList .item:nth-of-type(" + (n+1) + ")").addClass("active");
   }
-
   function addImgSrc()
   {
     var feedURL = prompt("Enter new image URL:");
@@ -209,20 +216,21 @@ body{
         start();
     })
   }
+var currSelection;
 
   function imgSelected(n)
   {
+    currSelection = n;
     var currName = currRSSFeedList[n].name;
     var id = currRSSFeedList[n].id;
     var imgURL = currRSSFeedList[n].url;
-    resetFilters();
+//    resetFilters();
+    saveFilter(n);
     // Instead of the above resetFilters(), init the filters stored by user and apply it!
     document.getElementById("theDetails").style.backgroundImage = "url(" + imgURL + ")";
-
     $("#theImageList .item").removeClass("active");
     $("#theImageList .item:nth-of-type(" + (n+1) + ")").addClass("active");
   }
-
   function start()
   {
     ac.show();
@@ -248,7 +256,6 @@ body{
         ac.hide();
     });
   }
-
   function loadRSS(url){
     console.log(url);
     loadFile(url, function(resData){
@@ -276,15 +283,11 @@ body{
     var name = data.name || "";
     var link = data.url || "";
     console.log(data);
-
     markup += "<img src='" + thumbnail + "'>";
     markup += "<a target='_blank' href='" + link + "'><h1>" + name + "</h1></a>";
-
-
     $("#theDetails").html(markup);
     //document.getElementById("theDetails").innerHTML = markup;
   }
-
   function resetFilters()
   {
       document.getElementById("blur").value = "0";
@@ -298,9 +301,9 @@ body{
       document.getElementById("sepia").value = "0";
       applyFilter();
 }
-
   function applyFilter()
   {
+      var n = currSelection;
       var blur = document.getElementById("blur").value + "px";
       var brightness = document.getElementById("brightness").value + "%";
       var contrast = document.getElementById("contrast").value + "%";
@@ -310,7 +313,6 @@ body{
       var opacity = document.getElementById("opacity").value + "%";
       var saturate = document.getElementById("saturate").value + "%";
       var sepia = document.getElementById("sepia").value + "%";
-
       var filter = " blur(" + blur + ") ";
       filter += " brightness(" + brightness + ") ";
       filter += " contrast(" + contrast + ") ";
@@ -320,13 +322,48 @@ body{
       filter += " opacity(" + opacity + ") ";
       filter += " saturate(" + saturate + ") ";
       filter += " sepia(" + sepia + ") ";
-      saveFilter(filter);
+
 
       document.getElementById("theDetails").style.filter = filter;
-  }
 
+      currRSSFeedList[n].blur = parseInt(blur);
+      currRSSFeedList[n].brightness = parseInt(brightness);
+      currRSSFeedList[n].contrast = parseInt(contrast);
+      currRSSFeedList[n].grayscale = parseInt(grayscale);
+      currRSSFeedList[n].hueRotate =   parseInt(hueRotate);
+      currRSSFeedList[n].invert =   parseInt(invert);
+      currRSSFeedList[n].opacity =   parseInt(opacity);
+      currRSSFeedList[n].saturate =   parseInt(saturate);
+      currRSSFeedList[n].sepia =   parseInt(sepia);
+
+      var url = "./updateImg?id=" + currRSSFeedList[n].id
+        + "&blur=" + parseInt(blur);
+        + "&brightness" + parseInt(brightness);
+        + "&contrast" + parseInt(contrast);
+        + "&grayscale" + parseInt(hueRotate);
+        + "&invert" + parseInt(invert);
+        + "&opacity" + parseInt(opacity);
+        + "&saturate" + parseInt(saturate);
+        + "&sepia" + parseInt(sepia);
+
+
+        loadFile(url, function(resData){
+          });
+  }
   function saveFilter(){
-    var filter = currRSSData[n].filter;
+    var obj = currRSSFeedList[n];
+
+    document.getElementById("blur").value = obj.blur || "0";
+    document.getElementById("brightness").value = obj.brightness || "100";
+    document.getElementById("contrast").value = obj.contrast || "100";
+    document.getElementById("grayscale").value = obj.grayscale || "0";
+    document.getElementById("hueRotate").value = obj.hueRotate || "0";
+    document.getElementById("invert").value = obj.invert || "0";
+    document.getElementById("opacity").value = obj.opacity || "100";
+    document.getElementById("saturate").value = obj.saturate || "100";
+    document.getElementById("sepia").value = obj.sepia || "0";
+    //send all this data over to the applyFilter function which makes this work
+    applyFilter();
   }
   </script>
 
