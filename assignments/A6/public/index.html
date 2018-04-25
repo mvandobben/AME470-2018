@@ -1,71 +1,48 @@
 <html>
 <head>
   <script src='asyncReq.js'></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scale=0, max-width=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scale=0, max-width=1.0">
   <script src='jquery-3.3.1.min.js'></script>
   <script src='ac.js'></script>
   <link rel="stylesheet" type="text/css" href="ac.css">
   <style>
-
-  .hiddeninall {
-	        display: none;
-	      }
-
-      .initialView {
-			  display: flex;
-			  flex-direction: column;
-			  justify-content: space-evenly;
-			  max-height: 100%;
-		  }
-	   body {
-	        margin: 0px;
-	      }
-	   @media (min-width: 500px) { /* big */
-
-	        #theImageList {
-	          max-width: 30%;
-	        }
-	        .hiddeninSmall {
-			  display: flex;
-			  flex-direction: column;
-			  justify-content: space-evenly;
-	        }
-	        .hiddeninBig {
-	          display: none;
-	        }
-	        #theDetails {
-  		  	  font-family:helvetica, sans-serif;
-  			  contain: auto;
-  			  justify-content: space-evenly;
-  			  align-items: center;
-  			  overflow: scroll;
-			  padding: 20px;
-	        }
-	      }
-	      @media (max-width: 500px){ /* small */
-
-  	        #theImageList {
-  	          width: 30%;
-  	          max-height: 75%;
-			  overflow: scroll;
-  	        }
-	        .hiddeninSmall{
-	          display: none;
-	        }
-	        .hiddeninBig{
-	          display: block;
-	          margin: 10px;
-	        }
-		    #theDetails {
-		  	  font-family:helvetica, sans-serif;
-			  max-width: 50%;
-			  contain: content;
-			  justify-content: space-evenly;
-			  align-items: center;
-			  overflow: scroll;
-			  padding: 20px;
-		    }
-		}
+  .hiddeninall{
+      display: none;
+    }
+    body{
+      margin: 0px;
+    }
+    @media (min-width: 500px){ /* big */
+      #theImageList, #theInspector{
+        width: 250px;
+        max-height: 100%;
+        overflow: scroll;
+      }
+      .hiddeninSmall{
+        display: block;
+      }
+      .hiddeninBig{
+        display: none;
+      }
+      #theDetails{
+        width: calc(100% - 500px);
+      }
+    }
+    @media (max-width: 500px){ /* small */
+     #theImageList, #theInspector{
+       width: 100%;
+     }
+     .hiddeninSmall{
+       display: none;
+     }
+     .hiddeninBig{
+       display: block;
+       margin: 10px;
+     }
+     #theDetails{
+       width: 100%;
+     }
+   }
   #theInspector input[type=range]{
     width: 65%;
     display: inline-block;
@@ -75,6 +52,8 @@
     display: inline-block;
     text-align: right;
 }
+
+
 body{
   margin: 0px;
   font-family: Arial, Helvetica, sans-serif;
@@ -206,6 +185,17 @@ body{
     }
   </style>
     <script>
+    function goBackToMain()
+  {
+    $("#theImageList").removeClass("hiddeninSmall");
+   // setTimeout(function(){$("#theFeedList .item").removeClass("active")}, 1000);
+  }
+    function changeVisibility() {
+    document.getElementById("theInspector").style.visibility = "hidden";
+}
+    function resetVisibility(){
+      document.getElementById("theInspector").style.visibility = "visible";
+    }
     function renameClicked(n){
       var currName = currRSSFeedList[n].name;
       var id = currRSSFeedList[n].id;
@@ -272,6 +262,7 @@ body{
 
     function imgSelected(n)
     {
+
       currSelection = n;
       var currName = currRSSFeedList[n].name;
       var id = currRSSFeedList[n].id;
@@ -280,7 +271,7 @@ body{
       setFilters(n)
       // Instead of the above resetFilters(), init the filters stored by user and apply it!
       document.getElementById("theDetails").style.backgroundImage = "url(" + imgURL + ")";
-
+      $("#allImagesWrapper").addClass("hiddeninSmall")
       $("#theImageList .item").removeClass("active");
       $("#theImageList .item:nth-of-type(" + (n+1) + ")").addClass("active");
     }
@@ -331,6 +322,7 @@ body{
     }
     function itemSelected(n)
     {
+      $("#theImageList").addClass("hiddeninSmall");
       $("#theList button").removeClass("active");
       $("#theList button:nth-of-type(" + (n+1) + ")").addClass("active");
       var data = currRSSData[n];
@@ -342,9 +334,11 @@ body{
 
       markup += "<img src='" + thumbnail + "'>";
       markup += "<a target='_blank' href='" + link + "'><h1>" + name + "</h1></a>";
+      markup = "<button onclick='goBackToList()' class='hiddeninBig'> Back </button>" + markup;
 
 
       $("#theDetails").html(markup);
+      markup = "<button onclick='goBackToList()' class='hiddeninBig'> Back </button>" + markup;
       //document.getElementById("theDetails").innerHTML = markup;
     }
 
@@ -451,8 +445,11 @@ body{
 	<h1> Image Lib</h1>
   <button id='editButton' onclick='addImgSrc()'> Add</button>
   <br><br><br>
-  <button id='editButton' onclick='addImgSrc()'> Upload an Image</button>
+  <button id='editButton'> Upload an Image</button>
+  <br><br><br>
+  <button id='editButton' onclick='resetVisibility()'> Show All</button>
   <div id='theImageList'></div>
+
 </div>
 <div id='theDetails'></div>
 <div id='theInspector'>
@@ -485,6 +482,9 @@ body{
   <input onchange='applyFilter()' id='sepia' value="0" type="range" min="0" max="100">
   <button id="filterButton" onclick='resetFilters()'> Reset </button>
   <button id="filterButton" onclick='saveFilter()'> Save</button>
+  <button id="filterButton" onclick="changeVisibility()">Hide</button>
+  <button id='filterButton' onclick='goBackToMain()' class='hiddeninBig'> Back </button>
 </div>
 </body>
 </html>
+
