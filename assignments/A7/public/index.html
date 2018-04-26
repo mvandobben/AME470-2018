@@ -1,7 +1,7 @@
 <html>
 <head>
   <script src='asyncReq.js'></script>
-  <script src='jquery-3.3.1.min.js'></script>
+  <script src='jquery-2.2.1.min.js'></script>
   <script src='ac.js'></script>
   <link rel="stylesheet" type="text/css" href="ac.css">
   <style>
@@ -402,14 +402,14 @@ body{
         //callback logic
         return;
       }
-      var fileUrl = "https://s3.amazonaws.com/ame470mvd/" + fileInput;
+      var fileUrl = "https://s3-us-west-2.amazonaws.com/ame470mvd/" + fileInput;
       var url = "./addImg?url=" + fileUrl;
-      url += "&date=" + new Date.getTime();
+      url += "&date=" + new Date().getTime();
       url += "&name=Untitled";
       url += "&id=test" + new Date().getTime();
-    loadFile(url, function(resData));
-    start();
-    addToBack();
+    loadFile(url, function(resData){
+      start();
+      //addToBack();
     });
   };
     xhr.open("POST", "/uploadFile", true);
