@@ -382,13 +382,48 @@ body{
     //send all this data over to the applyFilter function which makes this work
     applyFilter();
   }
+
+  var fileUploaded = function(){
+    var file = $('#theFileUploader').get(0);
+    var fileObj = $('#theFileUploader').get(0).files[0];
+    var filename= fileObj.name;
+    var ext = filename.split(".");
+    ext = ext[ext.length-1];
+    console.log(ext);
+    var fd = new FormData();
+    var fileInput = "s3Upload_" + new Date().getTime().toString() + "." + ext;
+    fd.append('fileInput', fileInput);
+    fd.append('input', file.files[0]);
+    fd.append('date', (new Date()).toString());
+    //fd.append('data', data);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(e){
+      if(xhr.readyState !=4){
+        //callback logic
+        return;
+      }
+      var fileUrl = "https://s3.amazonaws.com/ame470mvd/" + fileInput;
+      var url = "./addImg?url=" + fileUrl;
+      url += "&date=" + new Date.getTime();
+      url += "&name=Untitled";
+      url += "&id=test" + new Date().getTime();
+    loadFile(url, function(resData));
+    start();
+    addToBack();
+    });
+  };
+    xhr.open("POST", "/uploadFile", true);
+    xhr.send(fd);
+  }
   </script>
 
 </head>
 <body onload='start()'>
 <div id='allImagesWrapper'>
-	<h1> Image Lib</h1>
+	<h1> Image Viewer</h1>
   <button id='editButton' onclick='addImgSrc()'> Add</button>
+  <br>
+  <input type='file' id='theFileUploader' onchange='fileUploaded()'>
   <div id='theImageList'></div>
 </div>
 <div id='theDetails'></div>
